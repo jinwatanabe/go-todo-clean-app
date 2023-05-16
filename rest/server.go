@@ -9,8 +9,15 @@ import (
 func NewServer() *gin.Engine {
 		r := gin.Default()
 
-		systemHandler := di.InitSystemHandler()
-		r.GET("/v1/systems/ping", systemHandler.Ping)
-		
+		v1 := r.Group("/v1")
+
+		{
+			systemHandler := di.InitSystemHandler()
+			v1.GET("/systems/ping", systemHandler.Ping)
+
+			todoHandler := di.InitTodoHandler()
+			v1.GET("/todos", todoHandler.GetAll)
+		}
+
 		return r
 }
