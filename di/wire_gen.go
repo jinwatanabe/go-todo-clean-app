@@ -7,7 +7,10 @@
 package di
 
 import (
+	"go-todo-clean-app/driver"
+	"go-todo-clean-app/gateway"
 	"go-todo-clean-app/rest/handler"
+	"go-todo-clean-app/usecase"
 )
 
 // Injectors from wire.go:
@@ -15,4 +18,13 @@ import (
 func InitSystemHandler() *handler.SystemHandler {
 	systemHandler := handler.NewSystemHandler()
 	return systemHandler
+}
+
+func InitTodoHandler() *handler.TodoHandler {
+	db := driver.ProvideDatabaseConnection()
+	todoDriver := driver.ProvideTodoDriver(db)
+	todoPort := gateway.ProvideTodoPort(todoDriver)
+	todoUsecase := usecase.ProvideTodoUsecase(todoPort)
+	todoHandler := handler.ProvideTodoHandler(todoUsecase)
+	return todoHandler
 }

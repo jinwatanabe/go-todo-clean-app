@@ -10,5 +10,15 @@ type TodoUsecase struct {
 }
 
 func (u TodoUsecase) GetAll() ([]domain.Todo, error) {
-	return u.todoPort.GetAll()
+	todos, err :=  u.todoPort.GetAll()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return todos, nil
+}
+
+func ProvideTodoUsecase(todoPort port.TodoPort) TodoUsecase {
+	return TodoUsecase{todoPort}
 }

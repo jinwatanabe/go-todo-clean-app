@@ -1,14 +1,29 @@
 package domain
 
 type Todo struct {
-	title TodoTitle
-	done TodoDone
+	Title TodoTitle `json:"title"`
+	Done TodoDone `json:"done"`
 }
 
 type TodoTitle struct {
-	value string
+	Value string `json:"value"`
 }
 
 type TodoDone struct {
-	value bool
+	Value bool `json:"value"`
+}
+
+func NewTodoTitle(value string) TodoTitle {
+	return TodoTitle{value}
+}
+
+func NewTodoDone(value bool) TodoDone {
+	return TodoDone{value}
+}
+
+func NewTodo(title string, done bool) Todo {
+	return Todo{
+		Title: NewTodoTitle(title),
+		Done: NewTodoDone(done),
+	}
 }

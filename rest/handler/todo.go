@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"go-todo-clean-app/domain"
 	"go-todo-clean-app/usecase"
 	"net/http"
@@ -21,6 +22,8 @@ func (h TodoHandler) GetAllTodos(c *gin.Context) {
 		return
 	}
 
+	fmt.Println(todos)
+
 	response := TodosResponse{
 		Todos: todos,
 	}
@@ -28,6 +31,10 @@ func (h TodoHandler) GetAllTodos(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+func ProvideTodoHandler(u usecase.TodoUsecase) *TodoHandler {
+	return &TodoHandler{u}
+}
+
 type TodosResponse struct {
-	Todos []domain.Todo `json:"todo"`
+	Todos []domain.Todo `json:"todos"`
 }
