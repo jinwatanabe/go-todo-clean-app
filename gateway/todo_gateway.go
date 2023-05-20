@@ -25,7 +25,22 @@ func (t TodoGateway) GetAll() ([]domain.Todo, error) {
 	}
 
 	return todos, nil
+}
 
+func (t TodoGateway) GetById(id domain.TodoId) (domain.Todo, error) {
+	intId := id.Value
+	result, err := t.todoDriver.GetById(intId)
+
+	if err != nil {
+		return domain.Todo{}, err
+	}
+
+	todo := domain.NewTodo(
+		result.Title,
+		result.Done,
+	)
+
+	return todo, nil
 }
 
 func ProvideTodoPort(d driver.TodoDriver) port.TodoPort {

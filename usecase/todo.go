@@ -19,6 +19,16 @@ func (u TodoUsecase) GetAll() ([]domain.Todo, error) {
 	return todos, nil
 }
 
+func (u TodoUsecase) GetById(id domain.TodoId) (domain.Todo, error) {
+	todo, err := u.todoPort.GetById(id)
+
+	if err != nil {
+		return domain.Todo{}, err
+	}
+
+	return todo, nil
+}
+
 func ProvideTodoUsecase(todoPort port.TodoPort) TodoUsecase {
 	return TodoUsecase{todoPort}
 }

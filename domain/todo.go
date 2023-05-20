@@ -5,6 +5,10 @@ type Todo struct {
 	Done TodoDone `json:"done"`
 }
 
+type TodoId struct {
+	Value int `json:"value"`
+}
+
 type TodoTitle struct {
 	Value string `json:"value"`
 }

@@ -6,6 +6,7 @@ import (
 
 type TodoDriver interface {
 	GetAll() ([]Todo, error)
+	GetById(id int) (Todo, error)
 }
 
 type TodoDriverImpl struct {
@@ -16,6 +17,12 @@ func (t TodoDriverImpl) GetAll() ([]Todo, error) {
 	todos := []Todo{}
 	t.conn.Find(&todos)
 	return todos, nil
+}
+
+func (t TodoDriverImpl) GetById(id int) (Todo, error) {
+	todo := Todo{}
+	t.conn.First(&todo, id)
+	return todo, nil
 }
 
 type Todo struct {

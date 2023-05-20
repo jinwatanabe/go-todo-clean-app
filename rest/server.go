@@ -16,7 +16,8 @@ func NewServer() *gin.Engine {
 			v1.GET("/systems/ping", systemHandler.Ping)
 
 			todoHandler := di.InitTodoHandler()
-			v1.GET("/todos", todoHandler.GetAllTodos)
+			v1.GET("/todos", todoHandler.GetAll)
+			v1.GET("/todos/:id", todoHandler.GetById)
 		}
 
 		return r
