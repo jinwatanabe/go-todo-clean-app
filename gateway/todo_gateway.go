@@ -43,6 +43,26 @@ func (t TodoGateway) GetById(id domain.TodoId) (domain.Todo, error) {
 	return todo, nil
 }
 
+func (t TodoGateway) Create(todo domain.CreateTodo) (domain.Todo, error) {
+	createTodo := driver.CreateTodo{
+		Title: todo.Title.Value,
+		Done: false,
+	}
+	
+	err := t.todoDriver.Create(createTodo)
+
+	if err != nil {
+		return domain.Todo{}, err
+	}
+
+	newTodo := domain.NewTodo(
+		todo.Title.Value,
+		false,
+	)
+
+	return newTodo, nil
+}
+
 func ProvideTodoPort(d driver.TodoDriver) port.TodoPort {
 	return &TodoGateway{d}
 }

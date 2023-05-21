@@ -7,6 +7,7 @@ import (
 type TodoDriver interface {
 	GetAll() ([]Todo, error)
 	GetById(id int) (Todo, error)
+	Create(todo CreateTodo) (error)
 }
 
 type TodoDriverImpl struct {
@@ -25,10 +26,29 @@ func (t TodoDriverImpl) GetById(id int) (Todo, error) {
 	return todo, nil
 }
 
+func (t TodoDriverImpl) Create(todo CreateTodo) (error) {
+	err := t.conn.Create(&todo)
+
+	if err != nil {
+		return err.Error
+	}
+
+	return nil
+}
+
 type Todo struct {
 	Id 				int    `gorm:"primaryKey" json:"id"`
 	Title 		string `gorm:"size:255" json:"title"j`
 	Done 			bool  `gorm:"default:false" json:"done"`
+}
+
+type CreateTodo struct {
+	Title string `json:"title"`
+	Done  bool   `json:"done"`
+}
+
+func (CreateTodo) TableName() string {
+	return "todos"
 }
 
 func NewTodo(id int, title string, done bool) Todo {

@@ -40,3 +40,14 @@ func Test_GetById(t *testing.T) {
 
 	assert.Equal(t, expected, actual)
 }
+
+func Test_Create(t *testing.T) {
+	MockDriver := new(MockTodoDriver)
+	gateway := TodoGateway{MockDriver}
+	MockDriver.On("Create", driver.CreateTodo{Title: "title", Done: false}).Return(domain.Todo{}, nil)
+
+	actual, _ := gateway.Create(domain.CreateTodo{Title: domain.TodoTitle{Value: "title"}})
+	expected := domain.Todo{Title: domain.TodoTitle{Value: "title"}, Done: domain.TodoDone{Value: false}}
+
+	assert.Equal(t, expected, actual)
+}

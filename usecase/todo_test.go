@@ -22,3 +22,11 @@ func Test_GetById(t *testing.T) {
 	actual, _ := usecase.GetById(domain.TodoId{Value: 1})
 	assert.Equal(t, domain.Todo{}, actual)
 }
+
+func Test_Create(t *testing.T) {
+	todoPort := new(MockTodoPort)
+	usecase := TodoUsecase{todoPort}
+	todoPort.On("Create", domain.CreateTodo{Title: domain.TodoTitle{Value: "title"}}).Return(domain.Todo{}, nil)
+	actual, _ := usecase.Create(domain.CreateTodo{Title: domain.TodoTitle{Value: "title"}})
+	assert.Equal(t, domain.Todo{}, actual)
+}

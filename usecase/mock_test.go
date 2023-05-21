@@ -19,3 +19,8 @@ func (m MockTodoPort) GetById(id domain.TodoId) (domain.Todo, error) {
 	args := m.Called(id)
 	return args.Get(0).(domain.Todo), args.Error(1)
 }
+
+func (m MockTodoPort) Create(todo domain.CreateTodo) (domain.Todo, error) {
+	args := m.Called(todo)
+	return args.Get(0).(domain.Todo), args.Error(1)
+}

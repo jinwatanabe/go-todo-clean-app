@@ -17,6 +17,10 @@ type TodoDone struct {
 	Value bool `json:"value"`
 }
 
+type CreateTodo struct {
+	Title TodoTitle
+}
+
 func NewTodoTitle(value string) TodoTitle {
 	return TodoTitle{value}
 }

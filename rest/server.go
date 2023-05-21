@@ -18,6 +18,7 @@ func NewServer() *gin.Engine {
 			todoHandler := di.InitTodoHandler()
 			v1.GET("/todos", todoHandler.GetAll)
 			v1.GET("/todos/:id", todoHandler.GetById)
+			v1.POST("/todos", todoHandler.Create)
 		}
 
 		return r

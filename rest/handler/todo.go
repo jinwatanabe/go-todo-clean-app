@@ -25,7 +25,6 @@ func (h TodoHandler) GetAll(c *gin.Context) {
 	response := TodosResponse{
 		Todos: todos,
 	}
-
 	c.JSON(http.StatusOK, response)
 }
 
@@ -52,9 +51,36 @@ func (h TodoHandler) GetById(c *gin.Context) {
 	response := TodoResponse{
 		Todo: todo,
 	}
+	c.JSON(http.StatusOK, response)
+}
+
+func (h TodoHandler) Create(c *gin.Context) {
+	title := c.PostForm("title")
+
+	if title == "" {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "title is required",
+		})
+		return
+	}
+
+	todo := domain.CreateTodo{
+		Title: domain.TodoTitle{Value: title},
+	}
+
+	newTodo, err := h.todoUsecase.Create(todo)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	response := TodoResponse{
+		Todo: newTodo,
+	}
 
 	c.JSON(http.StatusOK, response)
-
 }
 
 func ProvideTodoHandler(u usecase.TodoUsecase) *TodoHandler {
