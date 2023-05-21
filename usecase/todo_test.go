@@ -30,3 +30,11 @@ func Test_Create(t *testing.T) {
 	actual, _ := usecase.Create(domain.CreateTodo{Title: domain.TodoTitle{Value: "title"}})
 	assert.Equal(t, domain.Todo{}, actual)
 }
+
+func Test_Update(t *testing.T) {
+	todoPort := new(MockTodoPort)
+	usecase := TodoUsecase{todoPort}
+	todoPort.On("Update", domain.TodoId{Value: 1}, domain.UpdateTodo{Title: domain.TodoTitle{Value: "title"}}).Return(domain.Todo{}, nil)
+	err := usecase.Update(domain.TodoId{Value: 1}, domain.UpdateTodo{Title: domain.TodoTitle{Value: "title"}})
+	assert.Nil(t, err)
+}

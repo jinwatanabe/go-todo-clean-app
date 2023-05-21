@@ -8,6 +8,7 @@ type TodoDriver interface {
 	GetAll() ([]Todo, error)
 	GetById(id int) (Todo, error)
 	Create(todo CreateTodo) (error)
+	Update(id int, todo UpdateTodo) (error)
 }
 
 type TodoDriverImpl struct {
@@ -17,6 +18,7 @@ type TodoDriverImpl struct {
 func (t TodoDriverImpl) GetAll() ([]Todo, error) {
 	todos := []Todo{}
 	t.conn.Find(&todos)
+
 	return todos, nil
 }
 
@@ -36,6 +38,16 @@ func (t TodoDriverImpl) Create(todo CreateTodo) (error) {
 	return nil
 }
 
+func (t TodoDriverImpl) Update(id int, todo UpdateTodo) (error) {
+	err := t.conn.Model(&todo).Where("id = ?", id).Updates(todo)
+
+	if err != nil {
+		return err.Error
+	}
+	
+	return nil
+}
+
 type Todo struct {
 	Id 				int    `gorm:"primaryKey" json:"id"`
 	Title 		string `gorm:"size:255" json:"title"`
@@ -48,6 +60,15 @@ type CreateTodo struct {
 }
 
 func (CreateTodo) TableName() string {
+	return "todos"
+}
+
+type UpdateTodo struct {
+	Title string `json:"title"`
+	Done  bool   `json:"done"`
+}
+
+func (UpdateTodo) TableName() string {
 	return "todos"
 }
 

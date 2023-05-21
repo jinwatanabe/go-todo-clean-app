@@ -83,6 +83,56 @@ func (h TodoHandler) Create(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+func (h TodoHandler) Update(c *gin.Context) {
+	paramsId := c.Params.ByName("id")
+	intId, err := strconv.Atoi(paramsId)
+	id := domain.TodoId{Value: intId}
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	title := c.PostForm("title")
+	d := c.PostForm("done")
+
+	if title == "" && d == "" {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "title or done is required",
+		})
+		return
+	}
+	
+	done, err := strconv.ParseBool(d)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": err.Error(),
+		})
+	}
+
+	updateTodo := domain.UpdateTodo{
+		Title: domain.TodoTitle{Value: title},
+		Done: domain.TodoDone{Value: done},
+	}
+
+	err = h.todoUsecase.Update(id, updateTodo)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "success",
+	})
+}
+	
+
 func ProvideTodoHandler(u usecase.TodoUsecase) *TodoHandler {
 	return &TodoHandler{u}
 }

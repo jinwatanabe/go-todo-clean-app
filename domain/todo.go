@@ -1,6 +1,7 @@
 package domain
 
 type Todo struct {
+	Id TodoId `json:"id"`
 	Title TodoTitle `json:"title"`
 	Done TodoDone `json:"done"`
 }
@@ -21,17 +22,14 @@ type CreateTodo struct {
 	Title TodoTitle
 }
 
-func NewTodoTitle(value string) TodoTitle {
-	return TodoTitle{value}
-}
-
-func NewTodoDone(value bool) TodoDone {
-	return TodoDone{value}
+type UpdateTodo struct {
+	Title TodoTitle `json:"title"`
+	Done TodoDone `json:"done"`
 }
 
 func NewTodo(title string, done bool) Todo {
 	return Todo{
-		Title: NewTodoTitle(title),
-		Done: NewTodoDone(done),
+		Title: TodoTitle{Value: title},
+		Done: TodoDone{Value: done},
 	}
 }

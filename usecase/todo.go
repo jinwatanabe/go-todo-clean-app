@@ -39,6 +39,16 @@ func (u TodoUsecase) Create(todo domain.CreateTodo) (domain.Todo, error) {
 	return newTodo, nil
 }
 
+func (u TodoUsecase) Update(id domain.TodoId, todo domain.UpdateTodo) (error) {
+	err := u.todoPort.Update(id, todo)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func ProvideTodoUsecase(todoPort port.TodoPort) TodoUsecase {
 	return TodoUsecase{todoPort}
 }

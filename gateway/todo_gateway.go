@@ -20,7 +20,11 @@ func (t TodoGateway) GetAll() ([]domain.Todo, error) {
 	var todos []domain.Todo
 
 	for _, t := range result {
-		todo := domain.NewTodo(t.Title, t.Done)
+		todo := domain.Todo{
+			Id: domain.TodoId{Value: t.Id},
+			Title: domain.TodoTitle{Value: t.Title},
+			Done: domain.TodoDone{Value: t.Done},
+		}
 		todos = append(todos, todo)
 	}
 
@@ -35,10 +39,11 @@ func (t TodoGateway) GetById(id domain.TodoId) (domain.Todo, error) {
 		return domain.Todo{}, err
 	}
 
-	todo := domain.NewTodo(
-		result.Title,
-		result.Done,
-	)
+	todo := domain.Todo{
+		Id:	domain.TodoId{Value: result.Id},
+		Title: domain.TodoTitle{Value: result.Title},
+		Done: domain.TodoDone{Value: result.Done},
+	}
 
 	return todo, nil
 }
@@ -61,6 +66,21 @@ func (t TodoGateway) Create(todo domain.CreateTodo) (domain.Todo, error) {
 	)
 
 	return newTodo, nil
+}
+
+func (t TodoGateway) Update(id domain.TodoId, todo domain.UpdateTodo) (error) {
+	intId := id.Value
+	updateTodo := driver.UpdateTodo{
+		Title: todo.Title.Value,
+		Done: todo.Done.Value,
+	}
+
+	err := t.todoDriver.Update(intId, updateTodo)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func ProvideTodoPort(d driver.TodoDriver) port.TodoPort {

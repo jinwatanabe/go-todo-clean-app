@@ -24,3 +24,8 @@ func (m MockTodoDriver) Create (todo driver.CreateTodo) (error) {
 	args := m.Called(todo)
 	return args.Error(1)
 }
+
+func (m MockTodoDriver) Update (id int, todo driver.UpdateTodo) (error) {
+	args := m.Called(id, todo)
+	return args.Error(0)
+}

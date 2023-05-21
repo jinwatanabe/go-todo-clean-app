@@ -16,7 +16,12 @@ func Test_GetAll(t *testing.T) {
 
 	gateway := TodoGateway{mockDriver}
 	actual, _ := gateway.GetAll()
-	expected := []domain.Todo {domain.NewTodo("title", false)}
+	todo1 := domain.Todo {
+		Id: domain.TodoId{Value: 1},
+		Title: domain.TodoTitle{Value: "title"},
+		Done: domain.TodoDone{Value: false},
+	}
+	expected := []domain.Todo {todo1}
 
 	assert.Equal(t, expected, actual)
 }
@@ -33,10 +38,11 @@ func Test_GetById(t *testing.T) {
 	MockDriver.On("GetById", 1).Return(todo, nil)
 
 	actual, _ := gateway.GetById(domain.TodoId{Value: 1})
-	expected := domain.NewTodo(
-		"title",
-		false,
-	)
+	expected := domain.Todo{
+		Id: domain.TodoId{Value: 1},
+		Title: domain.TodoTitle{Value: "title"},
+		Done: domain.TodoDone{Value: false},
+	}
 
 	assert.Equal(t, expected, actual)
 }
@@ -50,4 +56,15 @@ func Test_Create(t *testing.T) {
 	expected := domain.Todo{Title: domain.TodoTitle{Value: "title"}, Done: domain.TodoDone{Value: false}}
 
 	assert.Equal(t, expected, actual)
+}
+
+func Test_Update(t *testing.T) {
+	MockDriver := new(MockTodoDriver)
+	gateway := TodoGateway{MockDriver}
+	MockDriver.On("Update", 1, driver.UpdateTodo{Title: "title1", Done: true}).Return(nil)
+
+	updateTodo := domain.UpdateTodo{Title: domain.TodoTitle{Value: "title1"}, Done: domain.TodoDone{Value: true}}
+	err := gateway.Update(domain.TodoId{Value: 1}, updateTodo)
+
+	assert.Nil(t, err)
 }
