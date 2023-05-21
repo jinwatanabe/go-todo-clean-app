@@ -131,7 +131,34 @@ func (h TodoHandler) Update(c *gin.Context) {
 		"message": "success",
 	})
 }
-	
+
+func (h TodoHandler) Delete(c *gin.Context) {
+	paramsId := c.Params.ByName("id")
+	Intid, err := strconv.Atoi(paramsId)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H {
+			"message": err.Error(),
+		})
+
+		return
+	}
+
+	id := domain.TodoId{Value: Intid}
+	err = h.todoUsecase.Delete(id)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H {
+			"message": err.Error(),
+		})
+
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H {
+		"message": "success",
+	})
+}
 
 func ProvideTodoHandler(u usecase.TodoUsecase) *TodoHandler {
 	return &TodoHandler{u}

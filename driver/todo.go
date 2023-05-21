@@ -9,6 +9,7 @@ type TodoDriver interface {
 	GetById(id int) (Todo, error)
 	Create(todo CreateTodo) (error)
 	Update(id int, todo UpdateTodo) (error)
+	Delete(id int) (error)
 }
 
 type TodoDriverImpl struct {
@@ -45,6 +46,17 @@ func (t TodoDriverImpl) Update(id int, todo UpdateTodo) (error) {
 		return err.Error
 	}
 	
+	return nil
+}
+
+func (t TodoDriverImpl) Delete(id int) (error) {
+	todo := Todo{}
+	err := t.conn.Delete(&todo, id)
+
+	if err != nil {
+		return err.Error
+	}
+
 	return nil
 }
 

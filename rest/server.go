@@ -20,6 +20,7 @@ func NewServer() *gin.Engine {
 			v1.GET("/todos/:id", todoHandler.GetById)
 			v1.POST("/todos", todoHandler.Create)
 			v1.PATCH("/todos/:id", todoHandler.Update)
+			v1.DELETE("/todos/:id", todoHandler.Delete)
 		}
 
 		return r

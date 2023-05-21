@@ -38,3 +38,13 @@ func Test_Update(t *testing.T) {
 	err := usecase.Update(domain.TodoId{Value: 1}, domain.UpdateTodo{Title: domain.TodoTitle{Value: "title"}})
 	assert.Nil(t, err)
 }
+
+func Test_Delete(t *testing.T) {
+	todoPort := new(MockTodoPort)
+	usecase := TodoUsecase{todoPort}
+	todoPort.On("Delete", domain.TodoId{Value: 1}).Return(nil)
+
+	err := usecase.Delete(domain.TodoId{Value: 1})
+
+	assert.Nil(t, err)
+}

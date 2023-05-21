@@ -8,5 +8,5 @@ import (
 func main() {
 	config.InitConfig()
 	s := rest.NewServer()
-    s.Run()
+	s.Run()
 }

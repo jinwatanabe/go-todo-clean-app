@@ -29,3 +29,8 @@ func (m MockTodoPort) Update(id domain.TodoId, todo domain.UpdateTodo) (error) {
 	args := m.Called(id, todo)
 	return args.Error(1)
 }
+
+func (m MockTodoPort) Delete(id domain.TodoId) (error) {
+	args := m.Called(id)
+	return args.Error(0)
+}

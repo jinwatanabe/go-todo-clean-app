@@ -83,6 +83,17 @@ func (t TodoGateway) Update(id domain.TodoId, todo domain.UpdateTodo) (error) {
 	return nil
 }
 
+func (t TodoGateway) Delete(id domain.TodoId) (error) {
+	intId := id.Value
+	err := t.todoDriver.Delete(intId)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func ProvideTodoPort(d driver.TodoDriver) port.TodoPort {
 	return &TodoGateway{d}
 }

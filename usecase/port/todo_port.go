@@ -7,4 +7,5 @@ type TodoPort interface {
 	GetById(id domain.TodoId) (domain.Todo, error)
 	Create(todo domain.CreateTodo) (domain.Todo, error)
 	Update(id domain.TodoId, todo domain.UpdateTodo) (error)
+	Delete(id domain.TodoId) (error)
 }

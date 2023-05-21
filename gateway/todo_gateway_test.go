@@ -68,3 +68,13 @@ func Test_Update(t *testing.T) {
 
 	assert.Nil(t, err)
 }
+
+func Test_Delete(t *testing.T) {
+	MockDriver := new(MockTodoDriver)
+	gateway := TodoGateway{MockDriver}
+	MockDriver.On("Delete", 1).Return(nil)
+
+	err := gateway.Delete(domain.TodoId{Value: 1})
+
+	assert.Nil(t, err)
+}

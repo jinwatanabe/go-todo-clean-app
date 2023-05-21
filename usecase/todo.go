@@ -49,6 +49,16 @@ func (u TodoUsecase) Update(id domain.TodoId, todo domain.UpdateTodo) (error) {
 	return nil
 }
 
+func (u TodoUsecase) Delete(id domain.TodoId) (error) {
+	err := u.todoPort.Delete(id)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func ProvideTodoUsecase(todoPort port.TodoPort) TodoUsecase {
 	return TodoUsecase{todoPort}
 }
