@@ -38,7 +38,7 @@ func (t TodoDriverImpl) Create(todo CreateTodo) (error) {
 
 type Todo struct {
 	Id 				int    `gorm:"primaryKey" json:"id"`
-	Title 		string `gorm:"size:255" json:"title"j`
+	Title 		string `gorm:"size:255" json:"title"`
 	Done 			bool  `gorm:"default:false" json:"done"`
 }
 
